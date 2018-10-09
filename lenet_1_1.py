@@ -1,6 +1,21 @@
 import tensorflow as tf
 import numpy as np
 import os
+import sys
+
+#直接把print保存在TXT文件中，这样我就可以不用复制黏贴了哈哈哈！
+class Logger(object):
+    def __init__(self, filename="Default.log"):
+        self.terminal = sys.stdout
+        self.log = open(filename, "a")
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        pass
+
 
 train_dir = './img'
 np.random.seed(1)
@@ -290,11 +305,34 @@ import matplotlib.pyplot as plt
 def evaluate_all_image():
     '''Test one image against the saved models and parameters
     '''
-
     n = len(test)
+    c0_orig, c1_orig, c2_orig, c3_orig, c4_orig, c5_orig, c6_orig, c7_orig, c8_orig, c9_orig = 0,0,0,0,0,0,0,0,0,0
+    c0_true, c1_true, c2_true, c3_true, c4_true, c5_true, c6_true, c7_true, c8_true, c9_true = 0,0,0,0,0,0,0,0,0,0
+    c0_false, c1_false, c2_false, c3_false, c4_false, c5_false, c6_false, c7_false, c8_false, c9_false = 0,0,0,0,0,0,0,0,0,0
+
     for i in range(n):
         img_dir = test[i]
-        print('         ',test_label[i])
+        if test_label[i] == 0:
+            c0_orig += 1
+        elif test_label[i] == 1:
+            c1_orig += 1
+        elif test_label[i] == 2:
+            c2_orig += 1
+        elif test_label[i] == 3:
+            c3_orig += 1
+        elif test_label[i] == 4:
+            c4_orig += 1
+        elif test_label[i] == 5:
+            c5_orig += 1
+        elif test_label[i] == 6:
+            c6_orig += 1
+        elif test_label[i] == 7:
+            c7_orig += 1
+        elif test_label[i] == 8:
+            c8_orig += 1
+        else:
+            c9_orig += 1
+
         image = Image.open(img_dir)
 
         image_array = np.array(image)
@@ -331,34 +369,91 @@ def evaluate_all_image():
                 max_index = np.argmax(prediction)
                 # print(prediction)
                 if max_index == 0:
-                    print('This is a c0 with possibility %.6f' % prediction[:, 0])
+                    if max_index == test_label[i]:
+                        c0_true += 1
+                    else:
+                        c0_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (test_label[i], max_index, prediction[:, 0]))
                 elif max_index == 1:
-                    print('This is a c1 with possibility %.6f' % prediction[:, 1])
+                    if max_index == test_label[i]:
+                        c1_true += 1
+                    else:
+                        c1_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (test_label[i], max_index, prediction[:, 1]))
                 elif max_index == 2:
-                    print('This is a c2 with possibility %.6f' % prediction[:, 2])
+                    if max_index == test_label[i]:
+                        c2_true += 1
+                    else:
+                        c2_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 2]))
                 elif max_index == 3:
-                    print('This is a c3 with possibility %.6f' % prediction[:, 3])
+                    if max_index == test_label[i]:
+                        c3_true += 1
+                    else:
+                        c3_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 3]))
                 elif max_index == 4:
-                    print('This is a c4 with possibility %.6f' % prediction[:, 4])
+                    if max_index == test_label[i]:
+                        c4_true += 1
+                    else:
+                        c4_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 4]))
                 elif max_index == 5:
-                    print('This is a c5 with possibility %.6f' % prediction[:, 5])
+                    if max_index == test_label[i]:
+                        c5_true += 1
+                    else:
+                        c5_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 5]))
                 elif max_index == 6:
-                    print('This is a c6 with possibility %.6f' % prediction[:, 6])
+
+                    if max_index == test_label[i]:
+                        c6_true += 1
+                    else:
+                        c6_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 6]))
                 elif max_index == 7:
-                    print('This is a c7 with possibility %.6f' % prediction[:, 7])
+
+                    if max_index == test_label[i]:
+                        c7_true += 1
+                    else:
+                        c7_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 7]))
                 elif max_index == 8:
-                    print('This is a c8 with possibility %.6f' % prediction[:, 8])
+
+                    if max_index == test_label[i]:
+                        c8_true += 1
+                    else:
+                        c8_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 8]))
                 else:
-                    print('This is a c9 with possibility %.6f' % prediction[:, 9])
+                    if max_index == test_label[i]:
+                        c9_true += 1
+                    else:
+                        c9_false += 1
+                        print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
+                        test_label[i], max_index, prediction[:, 9]))
+    print(c0_orig, c1_orig, c2_orig, c3_orig, c4_orig, c5_orig, c6_orig, c7_orig, c8_orig, c9_orig)
+    print(c0_true, c1_true, c2_true, c3_true, c4_true, c5_true, c6_true, c7_true, c8_true, c9_true)
+    print(c0_false, c1_false, c2_false, c3_false, c4_false, c5_false, c6_false, c7_false, c8_false, c9_false)
 
 
 if __name__ == '__main__':
+    #把print写入到txt
+    sys.stdout = Logger("result.txt")
+
     N_CLASSES = 10
     IMG_W = 32  # resize the image, if the input image is too large, training will be very slow.
     IMG_H = 32
-    BATCH_SIZE = 2048
-    CAPACITY = 2048
-    MAX_STEP = 5000  # with current parameters, it is suggested to use MAX_STEP>10k
+    BATCH_SIZE = 512 #512,1024
+    CAPACITY = 1024
+    MAX_STEP = 1010  # with current parameters, it is suggested to use MAX_STEP>10k
     learning_rate = 0.009  # with current parameters, it is suggested to use learning rate<0.0001
 
     train_dir = './img/'
@@ -366,9 +461,146 @@ if __name__ == '__main__':
 
     data, data_label = get_files(train_dir)
     num = int(len(data) / 10)  # 设置交叉验证集
-    train = data[num:-1]
-    train_label = data_label[num:-1]
-    test = data[1:num-1]
-    test_label = data_label[1:num-1]
-    # run_training()
+
+    #第一个交叉验证
+    train, train_label, test, test_label = [], [], [], []
+    train = data[num + 1:num * 10 + 1]
+    train_label = data_label[num + 1:num * 10 + 1]
+
+    test = data[1:num+1]
+    test_label = data_label[1:num+1]
+    run_training()
+    evaluate_all_image()
+
+    #第二个交叉验证
+    tf.reset_default_graph()    #重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num+1]
+    train = data[num*2+1:num*10 + 1]
+    train_label = data_label[1:num+1]
+    train_label = data_label[num*2+1:num*10 + 1]
+
+    test = data[num:num*2+1]
+    test_label = data_label[num:num*2+1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第三个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*2 + 1]
+    train_label = data_label[1:num*2 + 1]
+    train = data[num*3 + 1:num*10 + 1]
+    train_label = data_label[num * 3 + 1:num * 10 + 1]
+
+    test = data[num*2 + 1:num * 3 + 1]
+    test_label = data_label[num*2 + 1:num * 3 + 1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第4个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*3 + 1]
+    train_label = data_label[1:num*3 + 1]
+    train = data[num*4 + 1:num*10 + 1]
+    train_label = data_label[num * 4 + 1:num * 10 + 1]
+
+    test = data[num*3 + 1:num * 4 + 1]
+    test_label = data_label[num*3 + 1:num * 4 + 1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第5个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*4 + 1]
+    train_label = data_label[1:num*4 + 1]
+    train = data[num*5 + 1:num*10 + 1]
+    train_label = data_label[num * 5 + 1:num * 10 + 1]
+
+    test = data[num*4 + 1:num * 5 + 1]
+    test_label = data_label[num*4 + 1:num * 5 + 1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第6个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*5 + 1]
+    train_label = data_label[1:num*5 + 1]
+    train = data[num*6 + 1:num*10 + 1]
+    train_label = data_label[num * 6 + 1:num * 10 + 1]
+
+    test = data[num*5 + 1:num * 6 + 1]
+    test_label = data_label[num*5 + 1:num * 6 + 1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第7个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*6 + 1]
+    train_label = data_label[1:num*6 + 1]
+    train = data[num*7 + 1:num*10 + 1]
+    train_label = data_label[num * 7 + 1:num * 10 + 1]
+
+    test = data[num*6 + 1:num * 7 + 1]
+    test_label = data_label[num*6 + 1:num * 7 + 1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第8个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*7 + 1]
+    train_label = data_label[1:num*7 + 1]
+    train = data[num*8 + 1:num*10 + 1]
+    train_label = data_label[num * 8 + 1:num * 10 + 1]
+
+    test = data[num*7 + 1:num * 8 + 1]
+    test_label = data_label[num*7 + 1:num * 8 + 1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第9个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*8 + 1]
+    train_label = data_label[1:num*8 + 1]
+    train = data[num*9 + 1:num*10 + 1]
+    train_label = data_label[num * 9 + 1:num * 10 + 1]
+
+    test = data[num*8 + 1:num * 9 + 1]
+    test_label = data_label[num*8 + 1:num * 9 + 1]
+
+    run_training()
+    evaluate_all_image()
+
+    # 第10个交叉验证
+    tf.reset_default_graph()  # 重启tensorflow，否则会报错
+    train, train_label, test, test_label = [], [], [], []
+
+    train = data[1:num*9 + 1]
+    train_label = data_label[1:num*9 + 1]
+
+    test = data[num*9 + 1:num * 10 + 1]
+    test_label = data_label[num*9 + 1:num * 10 + 1]
+
+    run_training()
     evaluate_all_image()
