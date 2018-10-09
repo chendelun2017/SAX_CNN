@@ -18,7 +18,7 @@ class Logger(object):
 
 
 train_dir = './img'
-np.random.seed(1)
+np.random.seed(1)   #shuffle打乱的数据顺序不变
 
 def get_files(file_dir):
     c0 = []
@@ -349,9 +349,6 @@ def evaluate_all_image():
 
             x = tf.placeholder(tf.float32, shape=[32, 32])
 
-            # you need to change the directories to yours.
-            logs_train_dir = './log_lenet/cv1/'
-
             saver = tf.train.Saver()
 
             with tf.Session() as sess:
@@ -371,74 +368,94 @@ def evaluate_all_image():
                 if max_index == 0:
                     if max_index == test_label[i]:
                         c0_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c0_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (test_label[i], max_index, prediction[:, 0]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 1:
                     if max_index == test_label[i]:
                         c1_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c1_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (test_label[i], max_index, prediction[:, 1]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 2:
                     if max_index == test_label[i]:
                         c2_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c2_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 2]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 3:
                     if max_index == test_label[i]:
                         c3_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c3_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 3]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 4:
                     if max_index == test_label[i]:
                         c4_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c4_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 4]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 5:
                     if max_index == test_label[i]:
                         c5_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c5_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 5]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 6:
 
                     if max_index == test_label[i]:
                         c6_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c6_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 6]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 7:
 
                     if max_index == test_label[i]:
                         c7_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c7_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 7]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 elif max_index == 8:
 
                     if max_index == test_label[i]:
                         c8_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c8_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 8]))
+                        confusion_mat[test_label[i]][max_index] += 1
                 else:
                     if max_index == test_label[i]:
                         c9_true += 1
+                        confusion_mat[test_label[i]][max_index] += 1
                     else:
                         c9_false += 1
                         print('The real label is %d, and the predict label is %d, with possibility %.6f' % (
                         test_label[i], max_index, prediction[:, 9]))
+                        confusion_mat[test_label[i]][max_index] += 1
     print(c0_orig, c1_orig, c2_orig, c3_orig, c4_orig, c5_orig, c6_orig, c7_orig, c8_orig, c9_orig)
     print(c0_true, c1_true, c2_true, c3_true, c4_true, c5_true, c6_true, c7_true, c8_true, c9_true)
     print(c0_false, c1_false, c2_false, c3_false, c4_false, c5_false, c6_false, c7_false, c8_false, c9_false)
@@ -447,17 +464,19 @@ def evaluate_all_image():
 if __name__ == '__main__':
     #把print写入到txt
     sys.stdout = Logger("result.txt")
+    #定义一个误差矩阵
+    confusion_mat = np.zeros([10, 10])
 
     N_CLASSES = 10
     IMG_W = 32  # resize the image, if the input image is too large, training will be very slow.
     IMG_H = 32
     BATCH_SIZE = 512 #512,1024
     CAPACITY = 1024
-    MAX_STEP = 1010  # with current parameters, it is suggested to use MAX_STEP>10k
-    learning_rate = 0.009  # with current parameters, it is suggested to use learning rate<0.0001
+    MAX_STEP = 1510  # with current parameters, it is suggested to use MAX_STEP>10k
+    learning_rate = 0.005  # with current parameters, it is suggested to use learning rate<0.0001
 
     train_dir = './img/'
-    logs_train_dir = './log_lenet/cv1/'
+    logs_train_dir = './log/log_lenet/'
 
     data, data_label = get_files(train_dir)
     num = int(len(data) / 10)  # 设置交叉验证集
@@ -604,3 +623,6 @@ if __name__ == '__main__':
 
     run_training()
     evaluate_all_image()
+
+    #输出误差矩阵,x方向为预测类，y方向为实际类
+    print(confusion_mat)
